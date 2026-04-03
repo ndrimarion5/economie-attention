@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La nouvelle économie du nouveau ciel — Marion N'DRI</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --rust:#A8521A;--rust2:#C4641F;--gold:#D4A853;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'Inter',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+}
+html,body{
+  min-height:100%;background:#C8BFB2;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:12px;gap:12px;font-family:var(--sans);
+}
+.wrap{width:min(560px,100vw - 24px);display:flex;flex-direction:column;align-items:center;gap:11px;}
+
+.track{
+  width:100%;aspect-ratio:1/1;position:relative;overflow:hidden;border-radius:5px;
+  box-shadow:0 0 0 1px rgba(168,82,26,0.18),0 16px 40px rgba(60,30,10,0.22),0 3px 8px rgba(60,30,10,0.14);
+}
+
+.bg{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+  transform:scale(1.06);
+  transition:transform 9s ease-out;
+  will-change:transform;
+}
+.slide.active .bg{transform:scale(1.0);}
+
+.ov{
+  position:absolute;inset:0;
+  background:rgba(10,6,2,0.38);
+}
+.halo{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 65% at 50% 50%, rgba(8,4,1,0.55) 0%, transparent 100%);
+}
+
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  opacity:0;pointer-events:none;z-index:1;
+  transition:opacity 0.6s ease;
+}
+.slide.active{opacity:1;pointer-events:all;z-index:2;}
+
+.slide::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(to right,var(--rust),rgba(168,82,26,0.2) 70%,transparent);
+  z-index:10;
+}
+
+.num{
+  position:absolute;top:16px;right:18px;z-index:10;
+  font-family:var(--mono);font-size:9px;letter-spacing:0.22em;
+  color:rgba(255,245,225,0.5);
+  text-shadow:0 1px 4px rgba(0,0,0,0.6);
+}
+
+.illo-wrap{
+  position:absolute;top:18px;left:22px;z-index:10;
+  opacity:0;transform:translateY(-5px);
+  transition:opacity 0.5s 0.1s,transform 0.5s 0.1s;
+}
+.slide.active .illo-wrap{opacity:0.85;transform:translateY(0);}
+
+.content{
+  position:relative;z-index:5;
+  width:100%;
+  padding:60px 44px 44px;
+  display:flex;flex-direction:column;align-items:flex-start;
+}
+
+.content>*{
+  opacity:0;transform:translateY(12px);
+  transition:opacity 0.45s ease,transform 0.45s ease;
+}
+.slide.active .content>*{opacity:1;transform:translateY(0);}
+.slide.active .content>*:nth-child(1){transition-delay:0.16s;}
+.slide.active .content>*:nth-child(2){transition-delay:0.26s;}
+.slide.active .content>*:nth-child(3){transition-delay:0.36s;}
+.slide.active .content>*:nth-child(4){transition-delay:0.44s;}
+.slide.active .content>*:nth-child(5){transition-delay:0.52s;}
+.slide.active .content>*:nth-child(6){transition-delay:0.58s;}
+
+.label{font-family:var(--mono);font-size:8.5px;letter-spacing:0.26em;text-transform:uppercase;color:var(--gold);margin-bottom:9px;text-shadow:0 1px 6px rgba(0,0,0,0.8);}
+.rule{width:26px;height:1.5px;background:var(--rust);margin-bottom:13px;opacity:0.85;}
+
+h1{font-family:var(--serif);font-size:clamp(20px,4vw,28px);font-weight:600;line-height:1.2;color:#FFFFFF;margin-bottom:12px;letter-spacing:-0.01em;text-shadow:0 2px 12px rgba(0,0,0,0.7);}
+h1 em{font-style:italic;font-weight:400;color:#FFD97A;}
+h1 .a{color:#F0A05A;font-style:italic;}
+
+.byline{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.byline-name{font-family:var(--serif);font-size:clamp(13px,2.3vw,15px);font-weight:600;color:#FFFFFF;text-shadow:0 1px 6px rgba(0,0,0,0.7);}
+.byline-tag{font-family:var(--mono);font-size:7.5px;letter-spacing:0.2em;text-transform:uppercase;color:#fff;background:var(--rust);padding:3px 8px;border-radius:2px;}
+
+p.body{font-family:var(--sans);font-size:clamp(11.5px,2.1vw,13px);line-height:1.75;color:rgba(255,245,220,0.88);font-weight:300;text-shadow:0 1px 8px rgba(0,0,0,0.65);}
+p.body strong{color:#FFFFFF;font-weight:500;}
+p.body em{font-style:italic;color:#FFD97A;}
+
+.stat{font-family:var(--serif);font-weight:700;font-size:clamp(52px,10vw,72px);line-height:1;color:#F0A05A;letter-spacing:-0.03em;margin-bottom:4px;text-shadow:0 2px 16px rgba(0,0,0,0.5);}
+.stat-sub{font-family:var(--mono);font-size:8px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,245,220,0.5);margin-bottom:12px;text-shadow:0 1px 6px rgba(0,0,0,0.6);}
+
+.bq{border-left:2px solid var(--gold);padding:11px 14px 11px 16px;background:rgba(0,0,0,0.35);margin:11px 0;width:100%;border-radius:0;}
+.bq p{font-family:var(--serif);font-size:clamp(12.5px,2.2vw,15px);font-style:italic;font-weight:400;line-height:1.5;color:#FFFFFF;text-shadow:0 1px 8px rgba(0,0,0,0.5);}
+.bq .attr{display:block;font-family:var(--mono);font-size:7px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-top:7px;}
+
+.chain{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:11px 0 9px;}
+.cs{font-family:var(--serif);font-size:clamp(10px,1.8vw,12px);font-weight:600;color:#FFFFFF;padding:5px 11px;border:1px solid rgba(212,168,83,0.6);background:rgba(0,0,0,0.4);text-shadow:0 1px 4px rgba(0,0,0,0.5);}
+.ca{color:var(--gold);font-family:var(--mono);font-size:11px;}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px;width:100%;}
+.cb{padding:11px;border:1px solid rgba(212,168,83,0.3);background:rgba(0,0,0,0.38);}
+.cb-tag{display:block;font-family:var(--mono);font-size:7px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid rgba(212,168,83,0.22);}
+.cb p{font-family:var(--sans);font-size:clamp(10px,1.7vw,11.5px);line-height:1.6;color:rgba(255,245,220,0.82);font-weight:300;}
+
+.question{border-top:1px solid rgba(212,168,83,0.35);padding-top:10px;margin-top:11px;width:100%;}
+.question p{font-family:var(--serif);font-size:clamp(12px,2.1vw,14px);font-style:italic;font-weight:400;line-height:1.5;color:#FFD97A;text-shadow:0 1px 6px rgba(0,0,0,0.5);}
+
+.bar{position:absolute;bottom:0;left:0;height:2px;background:linear-gradient(to right,var(--rust),var(--rust2));z-index:20;transition:width 0.55s cubic-bezier(.4,0,.2,1);}
+
+.nav{display:flex;align-items:center;gap:12px;}
+.btn{width:36px;height:36px;background:rgba(200,191,178,0.55);border:1px solid rgba(168,82,26,0.28);color:var(--rust2);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.17s;border-radius:3px;font-family:var(--mono);}
+.btn:hover{background:rgba(168,82,26,0.18);border-color:var(--rust);}
+.btn:disabled{opacity:0.2;cursor:not-allowed;}
+.dots{display:flex;gap:5px;align-items:center;}
+.dot{width:4px;height:4px;border-radius:50%;background:rgba(168,82,26,0.3);border:none;cursor:pointer;padding:0;transition:background 0.22s,transform 0.22s;}
+.dot.on{background:var(--rust);transform:scale(1.8);}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="track" id="track">
+
+  <div class="slide active" id="s0">
+    <div class="bg" style="background-image:url('https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=900&auto=format&fit=crop&q=85')"></div>
+    <div class="ov"></div><div class="halo"></div>
+    <span class="num">01 · 08</span>
+    <div class="illo-wrap">
+      <svg width="46" height="40" viewBox="0 0 46 40" fill="none">
+        <rect x="8" y="2" width="20" height="2" rx="1" fill="#D4A853"/>
+        <rect x="8" y="36" width="20" height="2" rx="1" fill="#D4A853"/>
+        <path d="M9 4 L19 20 L9 36" stroke="#D4A853" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M29 4 L19 20 L29 36" stroke="#D4A853" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <circle cx="19" cy="20" r="2.2" fill="#D4A853" opacity=".55"/>
+        <path d="M36 14 Q41 20 36 26" stroke="#D4A853" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+        <path d="M39 10 Q46 20 39 30" stroke="#D4A853" stroke-width="1.1" stroke-linecap="round" fill="none" opacity=".45"/>
+        <circle cx="34" cy="20" r="1.4" fill="#D4A853"/>
+      </svg>
+    </div>
+    <div class="content">
+      <div class="byline"><span class="byline-name">Marion N'DRI</span><span class="byline-tag">ISE 2</span></div>
+      <div class="label">Économie · Numérique</div>
+      <div class="rule"></div>
+      <h1>La nouvelle économie<br>du <span class="a">nouveau ciel</span></h1>
+      <p class="body">Vous ne payez pas Instagram avec de l'argent. Vous payez avec votre temps. Chaque minute passée à scroller est une transaction silencieuse. Bienvenue dans <strong>l'économie de l'attention</strong>, la plus grande économie du monde numérique, et la plus invisible.</p>
+    </div>
+    <div class="bar" id="bar" style="width:12.5%"></div>
+  </div>
+
+  <div class="slide" id="s1">
+    <div class="bg" style="background-image:url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=900&auto=format&fit=crop&q=85')"></div>
+    <div class="ov"></div><div class="halo"></div>
+    <span class="num">02 · 08</span>
+    <div class="illo-wrap">
+      <svg width="44" height="36" viewBox="0 0 44 36" fill="none">
+        <line x1="22" y1="3" x2="22" y2="32" stroke="#D4A853" stroke-width="1.4" stroke-linecap="round"/>
+        <line x1="12" y1="3" x2="32" y2="3" stroke="#D4A853" stroke-width="1.4" stroke-linecap="round"/>
+        <line x1="12" y1="3" x2="6" y2="14" stroke="#D4A853" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="32" y1="3" x2="38" y2="14" stroke="#D4A853" stroke-width="1.3" stroke-linecap="round"/>
+        <path d="M2 14 Q6 21 10 14" stroke="#D4A853" stroke-width="1.3" fill="rgba(212,168,83,.18)" stroke-linecap="round"/>
+        <path d="M34 14 Q38 21 42 14" stroke="#D4A853" stroke-width="1.3" fill="rgba(212,168,83,.18)" stroke-linecap="round"/>
+        <line x1="17" y1="32" x2="27" y2="32" stroke="#D4A853" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="content">
+      <div class="label">Le point de départ</div>
+      <div class="rule"></div>
+      <h1>L'économie existe parce que <em>tout est rare.</em></h1>
+      <p class="body">C'est la première phrase de tout manuel d'économie. Les ressources sont limitées ; le pétrole, le capital, la terre. Alors les humains choisissent, arbitrent, échangent. Pendant des siècles, une seule chose échappait à cette rareté : <strong>l'information.</strong> Elle coûtait cher à produire, donc elle était naturellement limitée. Puis vint Internet, et tout a basculé.</p>
+    </div>
+  </div>
+
+  <div class="slide" id="s2">
+    <div class="bg" style="background-image:url('https://images.unsplash.com/photo-1551650975-87deedd944c3?w=900&auto=format&fit=crop&q=85')"></div>
+    <div class="ov"></div><div class="halo"></div>
+    <span class="num">03 · 08</span>
+    <div class="illo-wrap">
+      <svg width="48" height="36" viewBox="0 0 48 36" fill="none">
+        <rect x="2" y="3" width="17" height="29" rx="3" stroke="#D4A853" stroke-width="1.4"/>
+        <line x1="6" y1="29" x2="15" y2="29" stroke="#D4A853" stroke-width="1.2" stroke-linecap="round" opacity=".5"/>
+        <path d="M27 18 C27 13 32 10 36 14 C40 18 44 15 44 18 C44 21 40 24 36 20 C32 16 27 21 27 18Z" stroke="#D4A853" stroke-width="1.4" fill="none"/>
+        <line x1="20" y1="18" x2="25" y2="18" stroke="#D4A853" stroke-width="1.2" stroke-linecap="round"/>
+        <polyline points="23,15 26,18 23,21" stroke="#D4A853" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="content">
+      <div class="label"><strong>Le basculement</strong></div>
+      <div class="rule"></div>
+      <div class="stat">500 h</div>
+      <div class="stat-sub"></strong>de vidéos mises en ligne chaque minute sur YouTube</strong></div>
+      <p class="body"></strong>Aucun être humain ne peut regarder une fraction de ce qui est produit chaque jour. L'information est devenue <strong>infinie (presque).</strong> Mais votre journée fait toujours 24 heures, la terre tourne toujours autour de soleil en 365/366 jours. La rareté change de camp ; ce qui devient rare, désormais, c'est <em>votre attention.</em></p></strong>
+    </div>
+  </div>
+
+  <div class="slide" id="s3">
+    <div class="bg" style="background-image:url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=900&auto=format&fit=crop&q=85')"></div>
+    <div class="ov"></div><div class="halo"></div>
+    <span class="num">04 · 08</span>
+    <div class="illo-wrap">
+      <svg width="44" height="36" viewBox="0 0 44 36" fill="none">
+        <path d="M4 6 L4 30 Q4 32 6 32 L22 26 L38 32 Q40 32 40 30 L40 6 Q40 4 38 4 L22 10 L6 4 Q4 4 4 6Z" stroke="#D4A853" stroke-width="1.4" fill="rgba(212,168,83,.07)"/>
+        <line x1="22" y1="10" x2="22" y2="26" stroke="#D4A853" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="35" cy="9" r="3.2" stroke="#D4A853" stroke-width="1.2" fill="none"/>
+        <line x1="33" y1="12" x2="37" y2="12" stroke="#D4A853" stroke-width="1.1" stroke-linecap="round"/>
+        <line x1="35" y1="13.5" x2="35" y2="15.5" stroke="#D4A853" stroke-width="1.1" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="content">
+      <div class="label">Un économiste l'avait prévu</div>
+      <div class="rule"></div>
+      <h1>Herbert Simon <em>l'écrivait dès 1971.</em></h1>
+      <div class="bq">
+        <p>Une surabondance d'information crée une pénurie d'attention.</p>
+        <span class="attr">Herbert Simon · Prix Nobel d'Économie (1978)</span>
+      </div>
+      <p class="body">Quand quelque chose devient abondant, la valeur migre vers son contraire. Plus de contenu = moins d'attention par contenu. <strong>La ressource rare devient le regard humain.</strong></p>
+    </div>
+  </div>
+
+  <div class="slide" id="s4">
+    <div class="bg" style="background-image:url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=900&auto=format&fit=crop&q=85')"></div>
+    <div class="ov"></div><div class="halo"></div>
+    <span class="num">05 · 08</span>
+    <div class="illo-wrap">
+      <svg width="48" height="34" viewBox="0 0 48 34" fill="none">
+        <circle cx="7" cy="7" r="3.8" stroke="#D4A853" stroke-width="1.3" fill="none"/>
+        <path d="M3 17 Q3 13 7 13 Q11 13 11 17 L11 22" stroke="#D4A853" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+        <line x1="12" y1="15" x2="19" y2="15" stroke="#D4A853" stroke-width="1.2" stroke-linecap="round"/>
+        <polyline points="17,12 20,15 17,18" stroke="#D4A853" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="21" y="9" width="10" height="12" rx="1.5" stroke="#D4A853" stroke-width="1.3" fill="rgba(212,168,83,.06)"/>
+        <line x1="24" y1="13" x2="28" y2="13" stroke="#D4A853" stroke-width="1" stroke-linecap="round"/>
+        <line x1="24" y1="16" x2="28" y2="16" stroke="#D4A853" stroke-width="1" stroke-linecap="round"/>
+        <line x1="32" y1="15" x2="39" y2="15" stroke="#D4A853" stroke-width="1.2" stroke-linecap="round"/>
+        <polyline points="37,12 40,15 37,18" stroke="#D4A853" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="43" cy="15" r="3.2" stroke="#D4A853" stroke-width="1.3" fill="rgba(212,168,83,.1)"/>
+      </svg>
+    </div>
+    <div class="content">
+      <div class="label">Comment ça fonctionne</div>
+      <div class="rule"></div>
+      <h1>Imaginez un journal qui <em>ne vous ferait jamais payer.</em></h1>
+      <p class="body">Comment survivrait-il ? En vendant <strong>votre présence</strong> à des annonceurs. Vous n'êtes pas le client, vous êtes la marchandise. C'est exactement le modèle de Facebook, Google, TikTok. Vous donnez votre attention. La plateforme la transforme en données. Les données se revendent. C'est ce que les économistes appellent un <em>marché biface</em> : deux groupes mis en relation, et c'est vous qui payez sans le voir.</p>
+    </div>
+  </div>
+
+  <div class="slide" id="s5">
+    <div class="bg" style="background-image:url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&auto=format&fit=crop&q=85')"></div>
+    <div class="ov"></div><div class="halo"></div>
+    <span class="num">06 · 08</span>
+    <div class="illo-wrap">
+      <svg width="48" height="28" viewBox="0 0 48 28" fill="none">
+        <circle cx="6" cy="14" r="4.2" stroke="#D4A853" stroke-width="1.3" fill="rgba(212,168,83,.1)"/>
+        <circle cx="19" cy="14" r="4.2" stroke="#D4A853" stroke-width="1.3" fill="rgba(212,168,83,.1)"/>
+        <circle cx="32" cy="14" r="4.2" stroke="#D4A853" stroke-width="1.3" fill="rgba(212,168,83,.1)"/>
+        <circle cx="45" cy="14" r="4.2" stroke="#D4A853" stroke-width="1.3" fill="rgba(212,168,83,.1)"/>
+        <line x1="10.2" y1="14" x2="14.8" y2="14" stroke="#D4A853" stroke-width="1.3"/>
+        <line x1="23.2" y1="14" x2="27.8" y2="14" stroke="#D4A853" stroke-width="1.3"/>
+        <line x1="36.2" y1="14" x2="40.8" y2="14" stroke="#D4A853" stroke-width="1.3"/>
+        <path d="M4 7 L6 4 L8 7" stroke="#D4A853" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+        <path d="M17 6 L19 3 L21 6" stroke="#D4A853" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+        <path d="M30 5 L32 2 L34 5" stroke="#D4A853" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+        <path d="M43 4 L45 1 L47 4" stroke="#D4A853" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="content">
+      <div class="label">La mécanique</div>
+      <div class="rule"></div>
+      <h1>La formule qui génère <span class="a">des centaines de milliards.</span></h1>
+      <div class="chain">
+        <div class="cs">Attention</div><span class="ca">→</span>
+        <div class="cs">Données</div><span class="ca">→</span>
+        <div class="cs">Publicité</div><span class="ca">→</span>
+        <div class="cs">Revenu</div>
+      </div>
+      <p class="body">En 2023, selon STATISTA, Meta a encaissé <strong>131 milliards de dollars</strong> de revenus publicitaires et Google, <strong>237 milliards.</strong> Aucun produit vendu. Uniquement l'attention de milliards d'humains, monétisée à la seconde.</p>
+    </div>
+  </div>
+
+  <div class="slide" id="s6">
+    <div class="bg" style="background-image:url('https://images.unsplash.com/photo-1593784991095-a205069470b6?w=900&auto=format&fit=crop&q=85')"></div>
+    <div class="ov"></div><div class="halo"></div>
+    <span class="num">07 · 08</span>
+    <div class="illo-wrap">
+      <svg width="48" height="34" viewBox="0 0 48 34" fill="none">
+        <path d="M12 6 Q6 12 8 20 Q10 28 18 30 Q10 32 6 24 Q2 16 6 8 Q8 2 12 6Z" stroke="#D4A853" stroke-width="1.3" fill="rgba(212,168,83,.08)" stroke-linejoin="round"/>
+        <line x1="22" y1="17" x2="27" y2="17" stroke="#D4A853" stroke-width="1.1" opacity=".4"/>
+        <rect x="29" y="6" width="16" height="21" rx="2.5" stroke="#D4A853" stroke-width="1.3" fill="rgba(212,168,83,.06)"/>
+        <path d="M35 11 L42 16.5 L35 22Z" stroke="#D4A853" stroke-width="1.2" fill="rgba(212,168,83,.2)" stroke-linejoin="round"/>
+        <text x="14" y="12" font-family="monospace" font-size="6" fill="#D4A853" opacity=".5">z</text>
+        <text x="17.5" y="8" font-family="monospace" font-size="7" fill="#D4A853" opacity=".4">z</text>
+        <text x="21" y="5" font-family="monospace" font-size="5" fill="#D4A853" opacity=".3">z</text>
+      </svg>
+    </div>
+    <div class="content">
+      <div class="label">La nouvelle concurrence</div>
+      <div class="rule"></div>
+      <h1>Netflix ne se bat pas contre <em>Amazon Prime.</em></h1>
+      <div class="bq">
+        <p>Notre plus grand concurrent, c'est le sommeil.</p>
+        <span class="attr">Reed Hastings · PDG de Netflix · 2017</span>
+      </div>
+      <p class="body">Ce n'était pas une blague. Chaque heure passée à dormir est une heure pendant laquelle vous ne consommez pas. <strong>La concurrence ne porte plus sur les prix.</strong> Elle porte sur votre temps et votre concentration.</p>
+    </div>
+  </div>
+
+  <div class="slide" id="s7">
+    <div class="bg" style="background-image:url('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&auto=format&fit=crop&q=85')"></div>
+    <div class="ov"></div><div class="halo"></div>
+    <span class="num">08 · 08</span>
+    <div class="illo-wrap">
+      <svg width="44" height="34" viewBox="0 0 44 34" fill="none">
+        <rect x="2" y="12" width="14" height="20" rx="1" stroke="#D4A853" stroke-width="1.3" fill="rgba(212,168,83,.07)"/>
+        <rect x="27" y="7" width="14" height="25" rx="1" stroke="#D4A853" stroke-width="1.3" fill="rgba(212,168,83,.14)"/>
+        <line x1="0" y1="32" x2="44" y2="32" stroke="#D4A853" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="18" y1="19" x2="25" y2="19" stroke="#D4A853" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="18" y1="23" x2="25" y2="23" stroke="#D4A853" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="content">
+      <div class="label">En résumé</div>
+      <div class="rule"></div>
+      <h1>La même logique économique. <em>Une autre ressource.</em></h1>
+      <div class="two">
+        <div class="cb"><span class="cb-tag">Économie classique</span><p>Ressources naturelles rares face à des besoins humains illimités.</p></div>
+        <div class="cb"><span class="cb-tag">Économie de l'attention</span><p>Attention humaine limitée face à des contenus numériques illimités.</p></div>
+      </div>
+      <div class="question"><p>Avez-vous le sentiment que votre attention est devenue une monnaie d'échange ?</p></div>
+    </div>
+  </div>
+
+ </div>
+
+ <div class="nav">
+  <button class="btn" id="prev" disabled>&#8592;</button>
+  <div class="dots" id="dots"></div>
+  <button class="btn" id="next">&#8594;</button>
+ </div>
+</div>
+
+<script>
+const N=8,slides=Array.from({length:N},(_,i)=>document.getElementById('s'+i));
+const bar=document.getElementById('bar'),dotsEl=document.getElementById('dots');
+const btnP=document.getElementById('prev'),btnN=document.getElementById('next');
+let cur=0;
+for(let i=0;i<N;i++){
+  const d=document.createElement('button');
+  d.className='dot'+(i===0?' on':'');
+  d.addEventListener('click',()=>go(i));
+  dotsEl.appendChild(d);
+}
+function go(n){
+  if(n===cur)return;
+  slides[cur].classList.remove('active');
+  cur=n;slides[cur].classList.add('active');
+  dotsEl.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+  btnP.disabled=cur===0;btnN.disabled=cur===N-1;
+  bar.style.width=((cur+1)/N*100)+'%';
+}
+btnP.addEventListener('click',()=>cur>0&&go(cur-1));
+btnN.addEventListener('click',()=>cur<N-1&&go(cur+1));
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown')btnN.click();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')btnP.click();
+});
+let tx=0;
+document.getElementById('track').addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.getElementById('track').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>40)dx<0?btnN.click():btnP.click();
+},{passive:true});
+</script>
+</body>
+</html>
